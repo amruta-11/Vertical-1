@@ -168,15 +168,8 @@
           "description": "",
           "parameters":[
             {
-              "name": "token",
-              "in": "path",
-              "required": true,
-              "description": "Token",
-              "type": "string"
-            },
-            {
               "name": "ba",
-              "in": "path",
+              "in": "query",
               "required": true,
               "description": "Balancing Authority",
               "type": "string"
@@ -206,29 +199,22 @@
           "description": "",
           "parameters":[
             {
-              "name": "token",
-              "in": "path",
-              "required": true,
-              "description": "Token",
-              "type": "string"
-            },
-            {
               "name": "ba",
-              "in": "path",
+              "in": "query",
               "required": true,
               "description": "Balancing Authority",
               "type": "string"
             },
             {
               "name": "starttime ",
-              "in": "path",
+              "in": "query",
               "required": true,
               "description": "Start time",
               "type": "string"
             },
             {
               "name": "endtime",
-              "in": "path",
+              "in": "query",
               "required": true,
               "description": "End time",
               "type": "string"
@@ -257,15 +243,8 @@
           "description": "",
           "parameters":[
             {
-              "name": "token",
-              "in": "path",
-              "required": true,
-              "description": "Token",
-              "type": "string"
-            },
-            {
               "name": "ba",
-              "in": "path",
+              "in": "query",
               "required": true,
               "description": "Balancing Authority",
               "type": "string"
