@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Azure GreenAPI</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the top navigation bar */
+.topnav {
+  overflow: hidden;
+  background-color: #007fff;
+}
+
+/* Style the topnav links */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Style the content */
+.content {
+  background-color: #ddd;
+  padding: 10px;
+  height: 200px; 
+}
+
+
+
+/* add a fixed bottom bar*/
+.navbar {
+  overflow: hidden;
+  background-color: #007fff;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.navbar a {
+  float: left;
+  display: block;
+  color: #007fff;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* The grid container */
+.grid-container {
+  display: grid;
+  grid-template-areas: 
+    'header header header header header header' 
+    'left middle middle middle middle right' 
+    'footer footer footer footer footer footer';
+  grid-column-gap: 5px; 
+} 
+
+.left,
+.middle,
+.right {
+  padding: 10px;
+ 
+}
+/* Style the header */
+.header {
+  grid-area: header;
+  background-color: #007fff;
+  padding: 5px;
+  text-align: center;
+  font-size: 22px;
+}
+
+/* Style the footer */
+.footer {
+  grid-area: footer;
+  background-color: #007fff;
+  padding: 5px;
+  text-align: center;
+}
+
+
+
+img {
+  display: block;
+  position: absolute;
+  margin-left: 40%;
+  margin-right: 40%;
+  bottom: 100px;
+}
+
+
+/* Style the left column */
+.left {
+  grid-area: left;
+}
+
+/* Style the middle column */
+.middle {
+  grid-area: middle;
+}
+
+/* Style the right column */
+.right {
+  grid-area: right;
+}
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media (max-width: 600px) {
+  .grid-container  {
+    grid-template-areas: 
+      'header header header header header header' 
+      'left left left left left left' 
+      'middle middle middle middle middle middle' 
+      'right right right right right right' 
+      'footer footer footer footer footer footer';
+  }
+}
+
+
+
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <a href=/home>Home</a>
+  <a href=/protected>Restart Search</a>
+  <a href=/docs_page>Documentation</a>
+</div>
+
+<div class="content">
+  <h2>Region Information</h2>
+  <p>
+    <ul>
+        <li><b>Input Azure Region:</b> {{request.args.get('AZ_Region', None)}}</li>
+        <li><b>Identified Azure Region :</b> {{data.AZ_Region}}</li>
+        <li><b>Unique WattTime id :</b> {{data.id}}</li>
+        <li><b>Balancing Authority:</b> {{data.name}}</li>
+        <li><b>Balancing Authority Abrreviation:</b> {{data.abbrev}}</li>
+    </ul>
+  </p>
+  <br>
+</div>
+
+
+
+
+<div class="grid-container" style="text-align:justify">
+    <div class="header">
+    </div>
+    <div class="left" style="background-color:#ddd;">
+        <strong>Past Data Types:</strong>
+        <p><strong>Grid Data:</strong> Obtain historical marginal emissions for a given area (balancing authority abbreviated code) or location (latitude/longitude pair). </p>
+        <p><strong>Historical Data: </strong>Obtain a zip file containing the MOER values and timestamps for a given region for (up to) the past two years.  Historical data will be updated on the 2nd of each month at midnight UTC for the previous month. </p>
+        
+    </div>
+    <div class="middle" style="background-color:#bbb;">
+        <div>
+            <p>
+                <form method="POST" action="/chooser">
+                    <label for="data">Choose a Data Type:</label>
+                
+                        <select name="data" id="data">
+                         <option value="nada">  </option>
+                         <option value="grid">Grid Data</option>
+                         <option value="historical">Historical</option>
+                         <option value="index">Real-Time</option>
+                         <option value="forecast">Marginal Forecast</option>
+                        </select>
+                    
+                <br>
+                <body>
+                    <sub>
+                        <sub>
+                            For Grid Data and Forecasts, please enter a search start and end time
+                        </sub>
+                        
+                    </sub>
+                    
+                </body>
+                <br><br>
+                    <input type="hidden" name="abbrev" value="{{data.abbrev}}"/>
+                    Start Time: <input type = "text" name = "starttime">
+                    End Time: <input type = "text" name = "endtime">
+                    <br><br>
+                    <input type = "submit" value="Find">
+                
+                  </form>
+                <p>
+                    <sub>
+                        <sub>
+                            Time in ISO8601 format. ex: 2019-02-20T16:00:00-0800
+                        </sub>
+                    </sub>
+                </p>
+              </p>
+        
+        </div>
+    </div>  
+    <div class="right" style="background-color:#ddd;">
+        <strong>Current and Future Data Types:</strong> 
+        <p>
+            <strong>Real-Time Data:</strong> Provides a real-time signal indicating the carbon intensity on the local grid in that moment (typically updated every 5 minutes). The current emissions rate of the grid is returned as a raw Marginal Operating Emissions Rate (MOER)
+        </p>
+        <p>
+            <strong>Marginal Forecast Data:</strong> Obtain MOER forecast data for a given region. Omitting the starttime and endtime parameters will return the most recently generated forecast for a given region. Use the starttime and endtime parameters to obtain historical forecast data.
+        </p>
+    </div>
+    
+
+      <p></p>
+    <div class="footer">
+    </div>
+</div>
+
+
+<div>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg" class="center"></img>
+</div>
+  
+<div class="navbar">
+    <br>
+  
+</div>
+  
+
+</body>
+</html>

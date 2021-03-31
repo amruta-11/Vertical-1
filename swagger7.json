@@ -1,0 +1,424 @@
+{
+	"openapi": "3.0.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Azure Carbon-Intelligent API",
+      "description": "An API to associate Azure regions to WattTime balancing authorities, to return carbon intensity data"
+    },
+    "tags": [
+      {
+        "name": "search",
+        "description": "Methods for finding WattTime balancing authority"
+      },
+      {
+        "name": "data",
+        "description": "Pulling data directly from WattTime"
+      }
+    ],
+    "paths": {
+      "/getloc": {
+        "get": {
+          "tags": [
+            "search"
+          ],
+          "summary": "Finds corresponding balancing authority of an Azure region",
+          "description": "",
+          "parameters": [
+            {
+              "name": "AZ_Region",
+              "in": "query",
+              "required": true,
+              "description": "Name of Azure region",
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/loc_resp"
+                    }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/get_region":{
+        "get":{
+          "tags": [
+            "search"
+          ],
+          "summary": "Finds the nearest Azure region and corresponding balancing authority to given geocoordinates",
+          "description": "",
+          "parameters":[
+            {
+              "name": "User_latitude",
+              "in": "query",
+              "required": true,
+              "description": "Latitude of a user",
+              "type": "string"
+            },
+            {
+              "name": "User_longitude",
+              "in": "query",
+              "required": true,
+              "description": "Longitude of a user",
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/region_resp"
+                    }
+                }
+              }
+            }
+          }
+
+        }
+      },
+      "/from_ba":{
+        "get":{
+          "tags": [
+            "search"
+          ],
+          "summary": "Finds nearest Azure region for a given balancing authority",
+          "description": "",
+          "parameters":[
+            {
+              "name": "ba",
+              "in": "query",
+              "required": true,
+              "description": "Balancing Authority",
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/from_ba_resp"
+                    }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/get_grid_data":{
+        "get":{
+          "tags": [
+            "data"
+          ],
+          "summary": "Returns marginal grid data for a given balancing authority and time period",
+          "description": "",
+          "parameters":[
+            {
+              "name": "starttime",
+              "in": "query",
+              "required": true,
+              "description": "Starting time of interest",
+              "type": "string"
+            },
+            {
+              "name": "endtime",
+              "in": "query",
+              "required": true,
+              "description": "Ending time of interest",
+              "type": "string"
+            },
+            {
+              "name": "ba",
+              "in": "query",
+              "required": true,
+              "description": "Balancing Authority",
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/grid_data_resp"
+                    }
+                }
+              }
+            }
+          }
+
+        }
+      },
+      "/get_index_data":{
+        "get":{
+          "tags": [
+            "data"
+          ],
+          "summary": "Returns real-time data for a given balancing authority and time period",
+          "description": "",
+          "parameters":[
+            {
+              "name": "token",
+              "in": "path",
+              "required": true,
+              "description": "Token",
+              "type": "string"
+            },
+            {
+              "name": "ba",
+              "in": "path",
+              "required": true,
+              "description": "Balancing Authority",
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Real-time ba data",
+              "content": {
+                "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/index_data_resp"
+                    }
+                }
+              }
+            }
+          }
+
+        }
+      },
+      "/get_forecast_data":{
+        "get":{
+          "tags": [
+            "data"
+          ],
+          "summary": "Returns marginal forecast data for a given balancing authority and time period",
+          "description": "",
+          "parameters":[
+            {
+              "name": "token",
+              "in": "path",
+              "required": true,
+              "description": "Token",
+              "type": "string"
+            },
+            {
+              "name": "ba",
+              "in": "path",
+              "required": true,
+              "description": "Balancing Authority",
+              "type": "string"
+            },
+            {
+              "name": "starttime ",
+              "in": "path",
+              "required": true,
+              "description": "Start time",
+              "type": "string"
+            },
+            {
+              "name": "endtime",
+              "in": "path",
+              "required": true,
+              "description": "End time",
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "forecast data",
+              "content": {
+                "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/forecast_data_resp"
+                    }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/get_historical_data":{
+        "get":{
+          "tags": [
+            "data"
+          ],
+          "summary": "Returns historical data for a given balancing authority",
+          "description": "",
+          "parameters":[
+            {
+              "name": "token",
+              "in": "path",
+              "required": true,
+              "description": "Token",
+              "type": "string"
+            },
+            {
+              "name": "ba",
+              "in": "path",
+              "required": true,
+              "description": "Balancing Authority",
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Historical ba data",
+              "content": {
+                "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/historical_data_resp"
+                    }
+                }
+              }
+            }
+          }
+
+        }
+      }
+    },
+    "components": {
+        "schemas": {
+          "loc_resp": {
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "abbrev":{
+                  "type":"string"
+              },
+              "name": {
+                  "type":"string"
+              }
+            }
+          },
+          "region_resp":{
+            "properties":{
+              "AZ_Region":{
+                "type":"string"
+              },
+              "name":{
+                "type":"string"
+              },
+              "abbrev":{
+                "type":"string"
+              },
+              "AZ_latitude":{
+                "type":"string"
+              },
+              "AZ_longitude":{
+                "type":"string"
+              }
+            }
+          },
+          "from_ba_resp": {
+            "properties":{
+              "AZ_Region":{
+                "type":"string"
+              },
+              "name":{
+                "type":"string"
+              },
+              "abbrev":{
+                "type":"string"
+              },
+              "latitude":{
+                "type":"string"
+              },
+              "longitude":{
+                "type":"string"
+              }
+            }
+          },
+          "grid_data_resp":{
+            "properties":{
+              "ba":{
+                "type":"string"
+              },
+              "datatype":{
+                "type":"string"
+              },
+              "frequency":{
+                "type":"number"
+              },
+              "market":{
+                "type":"string"
+              },
+              "point_time":{
+                "type":"string"
+              },
+              "value":{
+                "type":"float"
+              },
+              "version":{
+                "type":"string"
+              }
+            }
+          },
+          "index_data_resp":{
+            "properties":{
+              "freq":{
+                "type":"string"
+              },
+              "ba":{
+                "type":"string"
+              },
+              "percent":{
+                "type":"number"
+              },
+              "moer":{
+                "type":"float"
+              },
+              "point_time":{
+                "type":"string"
+              }
+            }
+          },
+          "forecast_data_resp": {
+            "type": "array",
+            "items": 
+              {
+                "type": "object",
+                "properties": {
+                  "generated_at": {
+                    "type": "string"
+                  },
+                  "forecast": {
+                    "type": "array",
+                    "items": 
+                      {
+                        "type": "object",
+                        "properties": {
+                          "point_time": {
+                            "type": "string"
+                          },
+                          "ba": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "type": "integer"
+                          },
+                          "version": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                  }
+                }
+              }
+          },
+          "historical_data_resp":{
+          }
+        }
+    }
+}

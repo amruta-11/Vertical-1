@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Azure GreenAPI</title>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the top navigation bar */
+.topnav {
+  overflow: hidden;
+  background-color: #007fff;
+}
+
+/* Style the topnav links */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+
+/* Change color on hover */
+.topnav a:hover {
+  background-color: #91a3b1;
+  color: black;
+}
+
+/* add a fixed bottom bar*/
+.navbar {
+  overflow: hidden;
+  background-color: #007fff;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.navbar a {
+  float: left;
+  display: block;
+  color: #007fff;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+
+/* Style the header */
+.header {
+  grid-area: header;
+  background-color: #007fff;
+  padding: 5px;
+  text-align: center;
+  font-size: 22px;
+}
+
+/* The grid container */
+.grid-container {
+  display: grid;
+  grid-template-areas: 
+    'header header header header header header' 
+    'left left middle middle right right' 
+    'footer footer footer footer footer footer';
+  /* grid-column-gap: 10px; - if you want gap between the columns */
+} 
+
+.left,
+.middle,
+.right {
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Style the left column */
+.left {
+  grid-area: left;
+  text-align: center
+}
+
+/* Style the middle column */
+.middle {
+  grid-area: middle;
+  text-align: center
+}
+
+/* Style the right column */
+.right {
+  grid-area: right;
+  text-align: center
+}
+
+/* Style the footer */
+.footer {
+  grid-area: footer;
+  background-color: #007fff;
+  padding: 10px;
+  text-align: center;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media (max-width: 600px) {
+  .grid-container  {
+    grid-template-areas: 
+      'header header header header header header' 
+      'left' 
+      'middle' 
+      'right' 
+      'footer footer footer footer footer footer';
+  }
+}
+</style>
+</head>
+<body>
+  <div class="topnav">
+    <a href=/home>Home</a>
+    <a href=/docs_page>Documentation</a>
+  </div>
+  
+<h2 style='color: #5d6b74;'>Find Data for WattTime and Azure Region Associations</h2>
+<ul>
+  <li>
+    <p>Search by Azure Region: With a known Azure region, find the balancing authority and carbon intensity data</p>
+  </li>
+  <li>
+    <p>Search by location: Using a location, find the local Azure region, its associated balancing authority, and carbon intensity data  </p>
+  </li>
+  <li>
+    <p>Search by Balancing Authority: From a known balancing authority find the associated Azure region and carbon intensity data</p>
+  </li>
+</ul>
+
+<br><br>
+<div class="grid-container">
+  <div class="header">
+    <h4 style="color:whitesmoke">Choose an Input Parameter</h4>
+  </div>
+  
+  <div class="left" style="background-color:#aaa;">
+    <h3>Known Azure Region:</h3>
+      <form method="GET" action="/getloc">
+       Azure Region: <input type = "text" name = "AZ_Region">
+       <input type = "submit" value="Find">
+      </form>
+  
+  </div>
+  <div class="middle" style="background-color:#bbb;">
+    <h3>Known Location:</h3>
+      <form method="GET" action="/get_region">
+        Latitude : <input type = "text" name = "User_latitude">
+        Longitude: <input type = "text" name = "User_longitude"><br><br>
+        <input type = "submit" value="Find">
+      </form>
+  </div>  
+  <div class="right" style="background-color:#ccc;">
+    <h3>Known WattTime Balancing Authority:</h3>
+      <form method="GET" action="/from_ba">
+        Balancing Authority: <input type = "text" name = "ba">
+        <input type = "submit" value="Find">
+      </form>
+  
+  </div>
+  
+  <div class="footer">
+  <p></p>
+  </div>
+</div>
+
+<div style=image-orientation: center>
+  <br>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg" class="center"></img>
+</div>
+
+
+<div class="navbar">
+  <br>
+
+</div>
+
+
+</body>
+</html>
